@@ -34,4 +34,8 @@ public class MovieService implements IMovieService {
         movieRepository.delete(id);
     }
 
+    @Override
+    public Iterable<Movie> findAllByNameContaining(String name) {
+        return movieRepository.findByNameContaining(name);
+    }
 }

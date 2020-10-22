@@ -6,19 +6,140 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 </head>
 <body>
-    <form id=""create onsubmit="addMovie()">
-        <h1>Tạo mới Movie</h1>
-        <label>Name
-            <input type="text" placeholder="Tên Movie" id="name">
-        </label>
-        <label>Country
-            <select id="country">
-                <th:block th:each="c:${country}">
-                    <option th:value="${c.id}" th:text="${c.name}"></option>
-                </th:block>
-            </select>
-        </label>
-        <input type="submit" value="Thêm">
-    </form>
+<form id="create" onsubmit="addMovie()">
+    <h1>Tao moi HV</h1>
+    <label>Name
+        <input type="text" placeholder="Ten Movie" id="name"/>
+    </label>
+    <label>country
+        <select id="country">
+            <th:block th:each="p: ${country}">
+                <option th:value="${p.id}" th:text="${p.name}"></option>
+            </th:block>
+        </select>
+    </label>
+    <input type="submit" value="CReat">
+</form>
+
+<form>
+    <label>Tên <input type="text" id="nameSearch" onkeyup="search()"></label>
+    <input type="submit" value="tìm kiếm">
+</form>
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>country</th>
+    </tr>
+    <tbody id="ListMovie">
+    <th:block th:each="c: ${movie}">
+        <tr>
+            <td><input th:value="${c.name}" disabled/></td>
+            <td><input th:value="${c.country.name}" disabled/></td>
+            <td><a th:href="@{/movies/edit/__${c.id}__}">Edit</a></td>
+            <td><a th:href="@{/movies/delete/__${c.id}__}">Delete</a></td>
+        </tr>
+    </th:block>
+    </tbody>
+</table>
+
+
 </body>
 </html>
+
+
+
+
+<script>
+    function addMovie() {
+
+        let nameMovie = $('#name').val();
+        let countryId = $('#country').val();
+        let newMovie =   {
+            name: nameMovie,
+            country: {
+                id: countryId
+            }
+        }
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            type: "POST",
+            data: JSON.stringify(newMovie),
+            url: "/movies/create",
+            success: showListMovie("/movies/findAll")
+        })
+        event.preventDefault();
+    }
+
+    function showListMovie(url) {
+        $.ajax({
+            type: "GET",
+            url: url,
+            success:function (movie) {
+                let content= "";
+                for (let i = 0; i < movie.length; i++) {
+                    content += `<tr><td >${movie[i].name}</td>`+
+                        `<td >${movie[i].country.name}</td></tr>`+
+                        `<a th:href="@{/movies/edit/__${c.id}__ }">Edit</a><br/>`
+                        `<a th:href="@{/movies/delete/__${c.id}__}">Delete</a><br/>`
+
+                }
+                $('#ListMovie').html(content);
+            }
+        })
+    }
+    function search() {
+        let name = $('#nameSearch').val();
+        let urlSearchParams = "/movies/search/" + name;
+        $.ajax({
+            type: 'GET',
+            url: urlSearchParams,
+            success: showListMovie(urlSearchParams)
+        })
+        event.preventDefault()
+    }
+
+    $(document).ready(function () {
+        var deleteLink = $("a:contains('Delete')");
+        $(deleteLink).click(function (event) {
+            $.ajax({
+                url: $(event.target).attr("href"),
+                type: "DELETE",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Accept", "application/json");
+                    xhr.setRequestHeader("Content-Type", "application/json");
+                },
+                success: showListMovie("/movies/findAll")
+            });
+            event.preventDefault();
+        });
+    });
+
+     $(document).ready(function () {
+        var deleteLink = $("a:contains('Delete')");
+        $(deleteLink).click(function (event) {
+            $.ajax({
+                url: $(event.target).attr("href"),
+                type: "DELETE",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Accept", "application/json");
+                    xhr.setRequestHeader("Content-Type", "application/json");
+                },
+                success: function () {
+                    showListMovie("/movies/findAll");
+                    alert("xóa thành công");
+                }
+            });
+            event.preventDefault();
+        });
+    });
+
+
+
+</script>
+
+
+

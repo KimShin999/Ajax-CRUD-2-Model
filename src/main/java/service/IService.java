@@ -1,5 +1,7 @@
 package service;
 
+import model.Movie;
+
 public interface IService<T> {
     Iterable<T> findAll();
     T findById(Long id);

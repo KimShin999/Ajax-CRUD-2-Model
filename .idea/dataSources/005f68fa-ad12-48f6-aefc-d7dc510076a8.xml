@@ -965,41 +965,61 @@ SELECT|sys.sys_config:null
       <Position>1</Position>
       <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
+      <SequenceIdentity>null</SequenceIdentity>
     </column>
     <column id="303" parent="299" name="name">
       <Position>2</Position>
       <DataType>varchar(255)|0s</DataType>
     </column>
-    <key id="304" parent="299" name="PRIMARY">
+    <index id="304" parent="299" name="country_id_uindex">
+      <ColNames>id</ColNames>
+      <Unique>1</Unique>
+      <Type>btree</Type>
+    </index>
+    <key id="305" parent="299" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="305" parent="300" name="next_val">
+    <key id="306" parent="299" name="country_id_uindex">
+      <ColNames>id</ColNames>
+      <UnderlyingIndexName>country_id_uindex</UnderlyingIndexName>
+    </key>
+    <column id="307" parent="300" name="next_val">
       <Position>1</Position>
       <DataType>bigint|0s</DataType>
     </column>
-    <column id="306" parent="301" name="id">
+    <column id="308" parent="301" name="id">
       <Position>1</Position>
       <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
+      <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="307" parent="301" name="name">
+    <column id="309" parent="301" name="name">
       <Position>2</Position>
       <DataType>varchar(255)|0s</DataType>
     </column>
-    <column id="308" parent="301" name="country_id">
+    <column id="310" parent="301" name="country_id">
       <Position>3</Position>
       <DataType>bigint|0s</DataType>
     </column>
-    <index id="309" parent="301" name="FKbg3j7jf8mnxmdx24xloav5066">
+    <index id="311" parent="301" name="movie_id_uindex">
+      <ColNames>id</ColNames>
+      <Unique>1</Unique>
+      <Type>btree</Type>
+    </index>
+    <index id="312" parent="301" name="FKbg3j7jf8mnxmdx24xloav5066">
       <ColNames>country_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="310" parent="301" name="PRIMARY">
+    <key id="313" parent="301" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
+    </key>
+    <key id="314" parent="301" name="movie_id_uindex">
+      <ColNames>id</ColNames>
+      <UnderlyingIndexName>movie_id_uindex</UnderlyingIndexName>
     </key>
   </database-model>
 </dataSource>
